@@ -33,33 +33,20 @@
       setTimeout(type, 500); // Start typing after short delay
     });
     
-    const pages = document.querySelectorAll('.page');
-let currentPage = 0;
+  document.addEventListener("DOMContentLoaded", () => {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("in-view");
+      } else {
+        entry.target.classList.remove("in-view"); // remove on exit
+      }
+    });
+  }, { threshold: 0.1 });
 
-function showPage(index) {
-  pages.forEach((page, i) => {
-    page.classList.add('inactive');
-    page.style.transform = 'rotateY(0deg)';
+  document.querySelectorAll(".animate-on-scroll").forEach(el => {
+    observer.observe(el);
   });
-
-  if (index >= 0 && index < pages.length) {
-    pages[index].classList.remove('inactive');
-    pages[index].style.transform = 'rotateY(0deg)';
-  }
-}
-
-document.getElementById('nextBtn').addEventListener('click', () => {
-  if (currentPage < pages.length - 1) {
-    currentPage++;
-    showPage(currentPage);
-  }
 });
 
-document.getElementById('prevBtn').addEventListener('click', () => {
-  if (currentPage > 0) {
-    currentPage--;
-    showPage(currentPage);
-  }
-});
 
-showPage(currentPage); // Show the first page initially
